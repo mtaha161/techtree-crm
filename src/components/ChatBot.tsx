@@ -68,7 +68,7 @@ export default function ChatBot() {
         boxShadow: '0 4px 18px rgba(99,102,241,.45)',
         display: 'grid', placeItems: 'center', fontSize: 22, transition: '.2s',
       }}>
-        {open ? '✕' : '🤖'}
+        {open ? '✕' : <img src="/logo.png" style={{ width: 30, height: 30, objectFit: 'contain' }} />}
       </button>
 
       {/* Chat panel */}
@@ -82,7 +82,7 @@ export default function ChatBot() {
         }}>
           {/* Header */}
           <div style={{ background: 'linear-gradient(135deg, #6366F1, #4338CA)', padding: '14px 16px', display: 'flex', alignItems: 'center', gap: 10, flexShrink: 0 }}>
-            <div style={{ width: 36, height: 36, borderRadius: '50%', background: 'rgba(255,255,255,.2)', display: 'grid', placeItems: 'center', fontSize: 18, flexShrink: 0 }}>🤖</div>
+            <div style={{ width: 36, height: 36, borderRadius: '50%', background: 'rgba(255,255,255,.2)', display: 'grid', placeItems: 'center', flexShrink: 0 }}><img src="/logo.png" style={{ width: 24, height: 24, objectFit: 'contain' }} /></div>
             <div style={{ flex: 1 }}>
               <div style={{ fontSize: 13.5, fontWeight: 700, color: '#fff' }}>TechTree AI Assistant</div>
               <div style={{ fontSize: 11, color: 'rgba(255,255,255,.75)' }}>Ask anything about your pipeline & inquiries</div>
@@ -95,7 +95,7 @@ export default function ChatBot() {
             {messages.map((msg, i) => (
               <div key={i} style={{ display: 'flex', flexDirection: msg.role === 'user' ? 'row-reverse' : 'row', gap: 8, alignItems: 'flex-end' }}>
                 {msg.role === 'ai' && (
-                  <div style={{ width: 28, height: 28, borderRadius: '50%', background: 'linear-gradient(135deg,#6366F1,#4338CA)', display: 'grid', placeItems: 'center', fontSize: 13, flexShrink: 0 }}>🤖</div>
+                  <div style={{ width: 28, height: 28, borderRadius: '50%', background: 'linear-gradient(135deg,#6366F1,#4338CA)', display: 'grid', placeItems: 'center', flexShrink: 0 }}><img src="/logo.png" style={{ width: 18, height: 18, objectFit: 'contain' }} /></div>
                 )}
                 <div style={{ maxWidth: '78%' }}>
                   <div style={{
