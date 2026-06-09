@@ -368,7 +368,7 @@ export default function InquiryDetailPanel({ inquiry, institutions, instMap, onC
                         <option>Shaheer</option>
                       </select>
                     ) : (
-                      <input type={type} value={(editForm as Record<string, string>)[k] ?? ''} onChange={e => setEditForm(f => ({ ...f, [k]: e.target.value }))} style={inputStyle} />
+                      <input type={type} value={(editForm as Record<string, unknown>)[k] as string ?? ''} onChange={e => setEditForm(f => ({ ...f, [k]: e.target.value }))} style={inputStyle} />
                     )}
                   </div>
                 ))}
