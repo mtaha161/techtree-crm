@@ -48,10 +48,10 @@ export default async function DashboardPage() {
   const overdueInqs = inqs.filter(i => i.follow_up_date && i.follow_up_date < today && !['Won','Lost'].includes(i.stage))
   const todayInqs = inqs.filter(i => i.follow_up_date === today)
   const allFollowUps = [
-    ...overdueInsts.map(i => ({ type: 'Institution' as const, name: i.name, stage: i.stage, city: i.city, date: i.follow_up_date, id: i.id, overdue: true, href: '/dashboard/institutions' })),
-    ...todayInsts.map(i => ({ type: 'Institution' as const, name: i.name, stage: i.stage, city: i.city, date: i.follow_up_date, id: i.id, overdue: false, href: '/dashboard/institutions' })),
-    ...overdueInqs.map(i => ({ type: 'Inquiry' as const, name: i.title, stage: i.stage, city: '', date: i.follow_up_date, id: i.id, overdue: true, href: '/dashboard/inquiries' })),
-    ...todayInqs.map(i => ({ type: 'Inquiry' as const, name: i.title, stage: i.stage, city: '', date: i.follow_up_date, id: i.id, overdue: false, href: '/dashboard/inquiries' })),
+    ...overdueInsts.map(i => ({ type: 'Institution' as const, name: i.name, stage: i.stage, sub: i.city, date: i.follow_up_date, id: i.id, overdue: true, href: '/dashboard/institutions' })),
+    ...todayInsts.map(i => ({ type: 'Institution' as const, name: i.name, stage: i.stage, sub: i.city, date: i.follow_up_date, id: i.id, overdue: false, href: '/dashboard/institutions' })),
+    ...overdueInqs.map(i => ({ type: 'Inquiry' as const, name: i.title, stage: i.stage, sub: i.rep, date: i.follow_up_date, id: i.id, overdue: true, href: '/dashboard/inquiries' })),
+    ...todayInqs.map(i => ({ type: 'Inquiry' as const, name: i.title, stage: i.stage, sub: i.rep, date: i.follow_up_date, id: i.id, overdue: false, href: '/dashboard/inquiries' })),
   ].sort((a, b) => a.date.localeCompare(b.date))
 
   // ── Rep stats ──────────────────────────────────────────

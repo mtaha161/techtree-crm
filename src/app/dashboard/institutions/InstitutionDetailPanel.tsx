@@ -180,7 +180,7 @@ export default function InstitutionDetailPanel({ institution, onClose, onUpdate,
               ].map(({ k, label, type }) => (
                 <div key={k} style={{ marginBottom: 10 }}>
                   <label style={{ fontSize: 11.5, fontWeight: 600, color: '#334155', marginBottom: 4, display: 'block' }}>{label}</label>
-                  <input type={type} value={(editForm as Record<string, string>)[k] ?? ''} onChange={e => setEditForm(f => ({ ...f, [k]: e.target.value }))} style={inputStyle} />
+                  <input type={type} value={(editForm as Record<string, unknown>)[k] as string ?? ''} onChange={e => setEditForm(f => ({ ...f, [k]: e.target.value }))} style={inputStyle} />
                 </div>
               ))}
               <div style={{ marginBottom: 10 }}>
