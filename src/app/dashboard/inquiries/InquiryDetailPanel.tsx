@@ -362,7 +362,7 @@ export default function InquiryDetailPanel({ inquiry, institutions, instMap, onC
                   <div key={k} style={{ marginBottom: 10 }}>
                     <label style={{ fontSize: 11.5, fontWeight: 600, color: '#334155', marginBottom: 4, display: 'block' }}>{label}</label>
                     {type === 'rep' ? (
-                      <select value={(editForm as Record<string, string>)[k] ?? ''} onChange={e => setEditForm(f => ({ ...f, [k]: e.target.value }))} style={inputStyle}>
+                      <select value={(editForm as Record<string, unknown>)[k] as string ?? ''} onChange={e => setEditForm(f => ({ ...f, [k]: e.target.value }))} style={inputStyle}>
                         <option value="">Select rep</option>
                         <option>Tarib</option>
                         <option>Shaheer</option>
