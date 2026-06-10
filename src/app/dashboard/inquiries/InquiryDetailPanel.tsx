@@ -37,7 +37,7 @@ interface Attachment {
   created_at: string
 }
 
-export default function InquiryDetailPanel({ inquiry, institutions, instMap, onClose, onUpdate, onDelete, onStageChange, isAdmin }: {
+export default function InquiryDetailPanel({ inquiry, institutions, instMap, onClose, onUpdate, onDelete, onStageChange, isAdmin, approvedUsers }: {
   inquiry: Inquiry
   institutions: Institution[]
   instMap: Record<string, string>
@@ -46,6 +46,7 @@ export default function InquiryDetailPanel({ inquiry, institutions, instMap, onC
   onDelete: (id: string) => void
   onStageChange: (id: string, stage: string) => void
   isAdmin?: boolean
+  approvedUsers?: { id: string; full_name: string }[]
 }) {
   const supabase = createClient()
   const [notes, setNotes] = useState(inquiry.notes ?? '')
@@ -364,8 +365,7 @@ export default function InquiryDetailPanel({ inquiry, institutions, instMap, onC
                     {type === 'rep' ? (
                       <select value={(editForm as Record<string, unknown>)[k] as string ?? ''} onChange={e => setEditForm(f => ({ ...f, [k]: e.target.value }))} style={inputStyle}>
                         <option value="">Select rep</option>
-                        <option>Tarib</option>
-                        <option>Shaheer</option>
+                        {(approvedUsers ?? []).map(u => <option key={u.id} value={u.full_name}>{u.full_name}</option>)}
                       </select>
                     ) : (
                       <input type={type} value={(editForm as Record<string, unknown>)[k] as string ?? ''} onChange={e => setEditForm(f => ({ ...f, [k]: e.target.value }))} style={inputStyle} />

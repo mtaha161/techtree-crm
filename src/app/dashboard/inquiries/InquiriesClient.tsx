@@ -316,6 +316,7 @@ export default function InquiriesClient({ initialData, institutions, currentUser
           onDelete={handleDelete}
           onStageChange={handleStageChange}
           isAdmin={currentUser?.role === 'admin'}
+          approvedUsers={approvedUsers}
         />
       )}
     </div>

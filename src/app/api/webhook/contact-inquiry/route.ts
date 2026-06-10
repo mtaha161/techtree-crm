@@ -37,7 +37,6 @@ export async function POST(req: NextRequest) {
     .ilike('full_name', '%tarib%')
     .maybeSingle()
   const repFullName = tarib?.full_name ?? 'Tarib'
-  const repName = 'Tarib' // inquiry rep dropdown only accepts 'Tarib' or 'Shaheer'
 
   const followUp = nextDayDate()
 
@@ -95,7 +94,7 @@ export async function POST(req: NextRequest) {
     channel: 'Website',
     contact_name: name,
     contact_info: phone ?? email,
-    rep: repName,
+    rep: repFullName,
     description: message ?? '',
     follow_up_date: followUp,
   })
