@@ -25,8 +25,12 @@ export default function LoginPage() {
 
         {/* Logo */}
         <div className="flex items-center gap-3 mb-2">
-          <img src="/logott.png" alt="TechTree" style={{ height: 36, width: 'auto', objectFit: 'contain' }} />
-          <span className="text-xl font-bold text-gray-900">CRM</span>
+          <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: '#005ea6' }}>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+              <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </div>
+          <span className="text-xl font-bold text-gray-900">TechTree CRM</span>
         </div>
 
         <div className="text-center">
