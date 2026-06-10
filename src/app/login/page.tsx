@@ -25,7 +25,7 @@ export default function LoginPage() {
 
         {/* Logo */}
         <div className="flex items-center gap-3 mb-2">
-          <img src="/logott.png" alt="TechTree" className="h-10 w-auto" />
+          <img src="/logo.png" alt="TechTree" className="h-10 w-auto" />
           <span className="text-xl font-bold text-gray-900">TechTree CRM</span>
         </div>
 
