@@ -6,6 +6,12 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY!
 )
 
+function nextDayDate(): string {
+  const d = new Date()
+  d.setDate(d.getDate() + 1)
+  return d.toISOString().split('T')[0]
+}
+
 export async function POST(req: NextRequest) {
   const secret = req.headers.get('x-webhook-secret')
   if (secret !== process.env.WEBHOOK_SECRET) {
@@ -19,6 +25,21 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'name, email and school are required' }, { status: 400 })
   }
 
+  // get Tarib's full name from users table
+  const { data: tarib } = await supabase
+    .from('users')
+    .select('full_name')
+    .ilike('full_name', '%tarib%')
+    .single()
+  const repName = tarib?.full_name ?? 'Tarib'
+
+  const followUp = nextDayDate()
+
+  // role mapping: Principal → principal field, anything else → steam_lead
+  const isPrincipal = role?.toLowerCase().includes('principal') || role?.toLowerCase().includes('head')
+  const principalVal = isPrincipal ? name : ''
+  const steamLeadVal = !isPrincipal ? name : ''
+
   // 1 — find existing institution or create new one
   let institution_id: string | null = null
 
@@ -26,19 +47,26 @@ export async function POST(req: NextRequest) {
     .from('institutions')
     .select('id')
     .ilike('name', school.trim())
-    .single()
+    .maybeSingle()
 
   if (existing) {
     institution_id = existing.id
   } else {
-    const notes = grade_levels ? `Grade levels: ${grade_levels}` : ''
     const { data: newInst, error: instError } = await supabase
       .from('institutions')
       .insert({
         name: school.trim(),
         city: city ?? '',
         stage: 'Prospecting',
-        notes,
+        email: email ?? '',
+        phone: phone ?? '',
+        grades: grade_levels ?? '',
+        principal: principalVal,
+        steam_lead: steamLeadVal,
+        offering: offering ?? '',
+        source: 'Website',
+        follow_up_date: followUp,
+        rep: repName,
       })
       .select('id')
       .single()
@@ -51,10 +79,6 @@ export async function POST(req: NextRequest) {
 
   // 2 — create inquiry
   const title = offering ? `${school} — ${offering}` : school
-  const fullNotes = [
-    message ? `Message: ${message}` : '',
-    grade_levels ? `Grade levels: ${grade_levels}` : '',
-  ].filter(Boolean).join('\n')
 
   const { error: inqError } = await supabase.from('inquiries').insert({
     title,
@@ -65,8 +89,9 @@ export async function POST(req: NextRequest) {
     channel: 'Website',
     contact_name: name,
     contact_info: phone ?? email,
-    rep: 'Tarib',
-    notes: fullNotes,
+    rep: repName,
+    description: message ?? '',
+    follow_up_date: followUp,
   })
 
   if (inqError) {
