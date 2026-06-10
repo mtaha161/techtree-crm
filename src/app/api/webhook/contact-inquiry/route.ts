@@ -7,9 +7,14 @@ const supabase = createClient(
 )
 
 function nextDayDate(): string {
-  const d = new Date()
-  d.setDate(d.getDate() + 1)
-  return d.toISOString().split('T')[0]
+  // Use Pakistan timezone (UTC+5) so follow-up is always "tomorrow" in local time
+  const now = new Date()
+  const pk = new Date(now.getTime() + (5 * 60 + now.getTimezoneOffset()) * 60000)
+  pk.setDate(pk.getDate() + 1)
+  const yyyy = pk.getFullYear()
+  const mm = String(pk.getMonth() + 1).padStart(2, '0')
+  const dd = String(pk.getDate()).padStart(2, '0')
+  return `${yyyy}-${mm}-${dd}`
 }
 
 export async function POST(req: NextRequest) {
@@ -25,13 +30,14 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'name, email and school are required' }, { status: 400 })
   }
 
-  // get Tarib's full name from users table
+  // get Tarib's full name from users table (for institution rep which uses full name)
   const { data: tarib } = await supabase
     .from('users')
     .select('full_name')
     .ilike('full_name', '%tarib%')
-    .single()
-  const repName = tarib?.full_name ?? 'Tarib'
+    .maybeSingle()
+  const repFullName = tarib?.full_name ?? 'Tarib'
+  const repName = 'Tarib' // inquiry rep dropdown only accepts 'Tarib' or 'Shaheer'
 
   const followUp = nextDayDate()
 
@@ -66,7 +72,7 @@ export async function POST(req: NextRequest) {
         offering: offering ?? '',
         source: 'Website',
         follow_up_date: followUp,
-        rep: repName,
+        rep: repFullName,
       })
       .select('id')
       .single()
