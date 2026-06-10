@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import Image from 'next/image'
 import { createClient } from '@/lib/supabase/client'
 
 export default function LoginPage() {
@@ -25,7 +26,7 @@ export default function LoginPage() {
 
         {/* Logo */}
         <div className="flex items-center gap-3 mb-2">
-          <img src="/logo.png" alt="TechTree" className="h-10 w-auto" />
+          <Image src="/logo.png" alt="TechTree" width={40} height={40} style={{ width: 'auto', height: '40px' }} />
           <span className="text-xl font-bold text-gray-900">TechTree CRM</span>
         </div>
 
