@@ -189,7 +189,7 @@ export default function InstitutionsClient({ initialData, inqCounts }: { initial
 
       {/* Kanban */}
       {view === 'kanban' && (
-        <div style={{ flex: 1, overflowX: 'auto', overflowY: 'hidden', padding: '14px 16px', display: 'flex', gap: 10, alignItems: 'flex-start' }}>
+        <div style={{ flex: 1, overflowX: 'auto', overflowY: 'hidden', padding: '14px 16px', display: 'flex', gap: 10, alignItems: 'stretch' }}>
           {STAGES.map(stage => {
             const cards = filtered.filter(i => i.stage === stage.label)
             return (
@@ -201,7 +201,7 @@ export default function InstitutionsClient({ initialData, inqCounts }: { initial
                   <span style={{ fontFamily: 'monospace', fontSize: 10, padding: '1px 6px', borderRadius: 100, border: `1px solid ${stage.border}`, color: stage.color }}>{cards.length}</span>
                 </div>
 
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 6, overflowY: 'auto', flex: 1, paddingRight: 2 }}>
                   {cards.length === 0 && (
                     <div style={{ border: '1.5px dashed #CBD2DF', borderRadius: 8, padding: '16px 12px', textAlign: 'center', fontSize: 11.5, color: '#94A3B8' }}>No institutions</div>
                   )}
