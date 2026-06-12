@@ -51,12 +51,25 @@ export default function AddInquiryModal({ onClose, onAdd, institutions, currentU
       .select('contact_name, contact_info')
       .eq('institution_id', form.institution_id)
       .not('contact_name', 'is', null)
-      .then(({ data }) => {
+      .then(async ({ data }) => {
         const seen = new Set<string>()
         const unique = (data ?? []).filter(d => {
           if (!d.contact_name || seen.has(d.contact_name)) return false
           seen.add(d.contact_name); return true
         }).map(d => ({ name: d.contact_name.trim(), info: (d.contact_info ?? '').trim().replace(/^\.+/, '') }))
+
+        // if no past inquiry contacts, fall back to institution's principal + phone
+        if (unique.length === 0) {
+          const { data: inst } = await supabase
+            .from('institutions')
+            .select('principal, phone, email')
+            .eq('id', form.institution_id)
+            .single()
+          if (inst?.principal) {
+            unique.push({ name: inst.principal, info: inst.phone || inst.email || '' })
+          }
+        }
+
         setContactSuggestions(unique)
       })
   }, [form.institution_id])
